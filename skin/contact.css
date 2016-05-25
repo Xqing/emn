@@ -1,0 +1,20 @@
+.emn-china-meeting .content .columns .content-contact {
+  line-height: 2;
+}
+.emn-china-meeting .content .columns .content-contact ul {
+  margin: 10px 30px;
+}
+.emn-china-meeting .content .columns .content-contact ul li {
+  list-style: disc;
+}
+.emn-china-meeting .content .columns .content-contact a {
+  color: #00c3b9;
+  transition: all .5s;
+  -moz-transition: all .5s;
+  -webkit-transition: all .5s;
+  -o-transition: all .5s;
+}
+.emn-china-meeting .content .columns .content-contact a:hover {
+  color: #222222;
+  text-decoration: underline;
+}

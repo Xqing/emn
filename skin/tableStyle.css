@@ -1,0 +1,36 @@
+.emn-china-meeting .content .columns .now-content {
+  line-height: 2;
+}
+.emn-china-meeting .content .columns .now-content table {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  color: #222;
+  table-layout: fixed;
+  text-align: center;
+}
+.emn-china-meeting .content .columns .now-content table tr:nth-child(2n+1) {
+  background: #e6e6e6;
+}
+.emn-china-meeting .content .columns .now-content table th {
+  background: #000000;
+  color: #ffffff;
+}
+.emn-china-meeting .content .columns .now-content table td {
+  padding: 0 5px;
+  overflow: hidden;
+  line-height: 3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.emn-china-meeting .content .columns .now-content table td a {
+  color: #00c3b9;
+  transition: all .5s;
+  -moz-transition: all .5s;
+  -webkit-transition: all .5s;
+  -o-transition: all .5s;
+}
+.emn-china-meeting .content .columns .now-content table td a:hover {
+  color: #222222;
+  text-decoration: underline;
+}
