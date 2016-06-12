@@ -153,11 +153,14 @@
   font-size: 48px;
   margin: 67px 0;
 }
-.emn-china-meeting .main .content .columns .image-area ul {
-  max-width: 900px;
-  width: 93%;
-  height: 400px;
+.emn-china-meeting .main .content .columns .image-area {
   overflow: hidden;
+}
+.emn-china-meeting .main .content .columns .image-area ul {
+  width: 93%;
+}
+.emn-china-meeting .main .content .columns .image-area ul li {
+  float: left;
 }
 .emn-china-meeting .main .content .columns .image-area ol.point {
   text-align: center;
