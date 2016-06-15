@@ -155,6 +155,7 @@
 }
 .emn-china-meeting .main .content .columns .image-area {
   overflow: hidden;
+  max-width: 900px;
 }
 .emn-china-meeting .main .content .columns .image-area ul {
   width: 93%;

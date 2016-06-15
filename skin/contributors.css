@@ -1,0 +1,28 @@
+.emn-china-meeting .content .columns .content-contributors .blue-title {
+  color: #33cccc;
+  margin: 35px 0;
+}
+.emn-china-meeting .content .columns .content-contributors p {
+  margin: 15px 0 24px 0;
+}
+.emn-china-meeting .content .columns .content-contributors ul {
+  margin: 0 30px;
+}
+.emn-china-meeting .content .columns .content-contributors ul li {
+  list-style: disc;
+  line-height: 1.5;
+}
+.emn-china-meeting .content .columns .content-contributors ul li i {
+  display: block;
+}
+.emn-china-meeting .content .columns .content-contributors ul li a {
+  color: #00c3b9;
+  transition: all .5s;
+  -moz-transition: all .5s;
+  -webkit-transition: all .5s;
+  -o-transition: all .5s;
+}
+.emn-china-meeting .content .columns .content-contributors ul li a:hover {
+  color: #222222;
+  text-decoration: underline;
+}
