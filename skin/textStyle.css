@@ -1,3 +1,16 @@
+.emn-china-meeting .content .columns h4 a {
+  font-weight: 100;
+  text-decoration: underline;
+  color: #00C2B9;
+  transition: all .5s;
+  -moz-transition: all .5s;
+  -webkit-transition: all .5s;
+  -o-transition: all .5s;
+}
+.emn-china-meeting .content .columns h4 a:hover {
+  color: #222222;
+  text-decoration: underline;
+}
 .emn-china-meeting .content .columns .content-text {
   line-height: 1.5;
   margin-top: 20px;
@@ -15,4 +28,107 @@
 .emn-china-meeting .content .columns .content-text a:hover {
   color: #222222;
   text-decoration: underline;
+}
+.emn-china-meeting .content .columns .content-text table {
+  width: 100%;
+}
+.emn-china-meeting .content .columns .content-text table tr th {
+  border-bottom: 1px solid #00c3b9;
+  box-shadow: none;
+  color: #212020;
+  font-size: 15px;
+  font-weight: 600;
+  height: auto;
+  padding: 11px 20px 11px 25px;
+  background: #dde9e6 none repeat scroll 0 0;
+}
+.emn-china-meeting .content .columns .content-text table tr td {
+  border-bottom: 1px solid #00c3b9;
+  color: #212020;
+  font-size: 12px;
+  height: auto;
+  padding: 11px 20px 11px 25px;
+}
+.emn-china-meeting .content .columns .content-text table tr td a {
+  color: #212020;
+}
+.emn-china-meeting .content .columns .content-text .pagination {
+  width: 100%;
+  height: 20px;
+  margin: 20px;
+}
+.emn-china-meeting .content .columns .content-text .pagination ul li {
+  float: left !important;
+  list-style: none !important;
+}
+.emn-china-meeting .content .columns .content-text .pagination ul li a {
+  width: 50px!important;
+  float: left!important;
+  text-align: center!important;
+  vertical-align: middle!important;
+  color: #212020!important;
+  font-size: 12px!important;
+  height: 20px!important;
+  line-height: 20px!important;
+}
+.emn-china-meeting .content .columns .content-text .pagination ul li.active {
+  width: 50px;
+  float: left;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 12px;
+  height: 20px;
+  line-height: 20px;
+  background: #00C2B9;
+}
+.emn-china-meeting .content .columns .content-text .pagination ul li.active a {
+  color: #ffffff;
+}
+.emn-china-meeting .content p.abstract {
+  font-size: 12px;
+  padding: 5px;
+  margin: 5px;
+  text-indent: 2em;
+  line-height: 20px;
+  font-style: italic;
+}
+.emn-china-meeting .content p.enroll {
+  font-size: 12px;
+  padding: 5px;
+  margin: 5px;
+  line-height: 20px;
+  border-bottom: 1px solid #00c3b9;
+}
+.emn-china-meeting .content .tabs {
+  width: 100%;
+}
+.emn-china-meeting .content .tabs ul {
+  width: 100% !important;
+}
+.emn-china-meeting .content .tabs ul li {
+  float: left !important;
+  list-style: none !important;
+}
+.emn-china-meeting .content .tabs ul li a {
+  width: 90px !important;
+  float: left !important;
+  color: #212020 !important;
+  font-size: 12px !important;
+  display: block !important;
+  text-align: center !important;
+  height: 25px !important;
+  line-height: 25px !important;
+}
+.emn-china-meeting .content .tabs ul li a.active {
+  background-color: #00C2B9 !important;
+  color: white !important;
+}
+.emn-china-meeting .content .tabs ul li a:hover {
+  background-color: #00C2B9 !important;
+  color: white !important;
+}
+.emn-china-meeting .content .contents {
+  border: 1px solid #00C2B9;
+  padding: 20px;
+  line-height: 2;
 }
