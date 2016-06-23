@@ -1,112 +1,124 @@
-(function () {
-  	function __ready(onready, config) {
-		function DOMContentLoaded() {
-			document.attachEvent ? (document.readyState == 'complete' ? doReady() : null) : doReady();
+/**
+ * Created by cdtangchao on 2014/12/30
+ */
+function static_import() {
+	static_import.prototype._jsTemplate = '<script src="${src}" charset="utf-8" type="text/javascript" itemid="${itemid}"><\/script>';
+	static_import.prototype._cssTemplate = '<link rel="stylesheet" type="text/css" href="${href}">';
+	static_import.prototype._getQueryString = function(name){
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		var r = window.location.search.substr(1).match(reg);
+		if(r!=null){
+			return decodeURI(r[2]);
 		}
-		
-        function doReady() {
-			onready();
-        }
-        
-		if ( document.readyState === "complete" ) {
-            doReady();
-        }
-        else if ( document.addEventListener ) {
-            document.addEventListener( "DOMContentLoaded", DOMContentLoaded, false );
-            window.addEventListener( "load", doReady, false );
-        } 
-		else if ( document.attachEvent ) {
-            document.attachEvent("onreadystatechange", DOMContentLoaded);
-            window.attachEvent( "onload", doReady );
-            var toplevel = false;
-            try {
-                toplevel = window.frameElement == null;
-            } catch(e) {}
+		else{
+			return null;
+		}
+	};
 
-            if ( document.documentElement.doScroll && toplevel ) {
-                (function () {
-	                if (panda.isReady) return;
-	                try {
-	                    document.documentElement.doScroll("left");
-	                } catch (error) {
-	                    setTimeout(arguments.callee, 0);
-	                    return;
-	                }
-	                doReady();
-	            })();
-            }
-        }
-    }
-	
-	window.__ready = __ready;
-})();
+	static_import.prototype._import = function(files, type, id, isdev){
+		var _this=this;
 
-/** 
- * @function asyncImport
- * @param src js的路径
-*/
+		if (!files) {
+			return;
+		}
 
-function asyncImportJs(src, charset) {
-	charset = charset || "utf-8";
-	
-	var container = document.getElementsByTagName("head")[0];
-    var script = document.createElement("script");
-    script.src = src;
+		var link;
+		var tempText;
+		for (var i = 0; i < files.length; i++) {
+			link = files[i];
+			if ("js" == type) {
+				tempText = _this._jsTemplate.replace("${src}", (isdev ? static_config.dev_root : static_config.root) + link).replace("${itemid}", id);
+			}
+			else if ("css" == type) {
+				tempText = _this._cssTemplate.replace("${href}", (isdev ? static_config.dev_root : static_config.root) + link).replace("${itemid}", id);
+			}
 
-    if (charset != undefined) {
-        script.charset = charset;
-    }
+			document.write(tempText);
+		}
+	};
 
-    if (!container) {
-        document.body.insertBefore(script, document.body.firstChild);
-    } else {
-        container.appendChild(script);
-    }
-}
+	static_import.prototype._single_import = function(name){
+		var _this=this;
 
-/** 
- * @function import
- * @param id 静态文件的id名称
- * @param fileType  文件类型  js/css
- * @param mode 运行环境 dev/online dev表示环境加载多个源码文件 online代表线上环境 加载单个合并压缩后的文件
-*/
-function ued_import(id, fileType, doc) {
-	var mode = ued_config.development;
-	doc = doc || document;
-	
-	if(!mode) {
-		mode = "online";
+		var fileType = (/\.[^\.]+$/.exec(name))[0].replace(".", "");
+		if (!static_concat[fileType][name]) {
+			return false;
+		}
+
+		var mode;
+
+		//地址栏配置优先原则
+		!function getMode(){
+			mode = static_config.mode;
+
+			//取得地址栏的配置
+			var para = _this._getQueryString("static_mode");
+			if(para&&/^online$|^uncompress$|^dev$|^dev-js$|^dev-css$/.test(para)){
+				mode = para;
+			}
+
+			if(!mode) {
+				mode = "online";
+			}
+		}();
+
+		switch (mode){
+			case MODE.online:
+				_this._import(
+					['dist/' + static_config.publish + "/" + name.replace("."+fileType, "-min." + fileType)] ,
+					fileType ,
+					name,
+					false
+				);
+				break;
+			case MODE.uncompress:
+				_this._import(
+					['dist/' + static_config.publish + "/" + name] ,
+					fileType ,
+					name,
+					false
+				);
+				break;
+			case MODE.dev:
+				_this._import(static_concat[fileType][name], fileType , name ,true);
+				break;
+			case MODE.dev_js:
+				if(fileType=="js"){
+					_this._import(static_concat[fileType][name], fileType , name,true);
+				}
+				else{
+					_this._import(
+						['dist/' + static_config.publish + "/" + name.replace("."+fileType, "-min." + fileType)] ,
+						fileType ,
+						name,
+						false
+					);
+				}
+				break;
+			case MODE.dev_css:
+				if(fileType=="css"){
+					_this._import(static_concat[fileType][name], fileType , name , true);
+				}
+				else{
+					_this._import(
+						['dist/' + static_config.publish + "/" + name.replace("."+fileType, "-min." + fileType)] ,
+						fileType ,
+						name,
+						false
+					);
+				}
+				break;
+		}
+	};
+
+	if(arguments.length==0){
+		return;
 	}
-
-	var __id = id +'.' + fileType;
-
-	if (!ued_concat[__id]) {
-		return false;
-	}
-
-	var jsTemplate = '<script src="${src}" charset="utf-8" type="text/javascript" itemid="${itemid}"><\/script>';
-	var cssTemplate = '<link rel="stylesheet" type="text/css" href="${href}">';
-
-	function __import(aFiles, type, id) {
-		for(var i=0; i<aFiles.length; i++) {
-			if (type == "js") {
-				var jsUrl = ued_config.root + aFiles[i];
-				document.write(jsTemplate.replace("${src}", jsUrl).replace("${itemid}", id));
-			} else if (type == "css") {
-				var link = aFiles[i];
-				var cssUrl = cssTemplate.replace("${href}", ued_config.root + link).replace("${itemid}", id);
-				document.write(cssUrl);
+	else{
+		for(var i=0;i<arguments.length;i++){
+			if(arguments[i]!=""){
+				static_import.prototype._single_import(arguments[i]);
 			}
 		}
 	}
-
-    if (ued_config.development == "online") {
-		if ("css" == fileType) {
-			__import(['dist/' + ued_config.publish + "/" + __id.replace(".css", "-min.css")], fileType, __id);
-		} else {
-			__import(['dist/' + ued_config.publish + "/" + __id.replace(".js", "-min.js")], fileType, __id);
-		}
-    } else if (ued_config.development == "dev") {
-		__import(ued_concat[__id], fileType, __id);
-    }
-} 
+};

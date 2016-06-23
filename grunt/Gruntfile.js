@@ -1,19 +1,10 @@
-/*global module:false*/
 module.exports = function (grunt) {
     /**
      * 配置文件
      */
-
     var config = grunt.file.read("./Config.js");
     eval(config);
 
-    /**
-     * 通过自定义插件生成文档的JSON格式
-     * plugin : ./node_modules/jsondoc.js
-     */
-    // var doc = config.doc;
-    // var jsondoc = require("jsondoc.js");
-    // jsondoc(grunt, doc);
     /**
      *  自动查找文件依赖
      */
@@ -21,7 +12,7 @@ module.exports = function (grunt) {
     var REQUIRE_RE = /[^.]require\((\'|\")(.*)(\'|\")\)/g;
     var SLASH_RE = /\\\\/g;
 
-    // 合并数组
+    //合并数组
     function combine(source, target) {
         var result = [];
         for (var i = target.length - 1; i >= 0; i--) {
@@ -42,7 +33,7 @@ module.exports = function (grunt) {
         return result;
     }
 
-    // 递归查找依赖
+    //递归查找依赖
     var Searcher = function () {
     };
     Searcher.prototype = {
@@ -50,11 +41,11 @@ module.exports = function (grunt) {
         result: null,
         key: "",
         fix: function (path) {
-            var reg = new RegExp("^" + ued_config.require);
+            var reg = new RegExp("^" + static_config.require);
             if (reg.test(path)) {
                 return path;
             } else {
-                return ued_config.require + path;
+                return static_config.require + path;
             }
         },
         start: function (key, path) {
@@ -143,13 +134,10 @@ module.exports = function (grunt) {
     /**
      * 初始化自动查找
      */
-    if (ued_conf && ued_config.development == 'online') {
-        for (var key in ued_conf) {
-            var conf = ued_conf[key];
-
-            if (key.match(/\.css$/)) {
-                continue;
-            }
+    if (static_conf && static_config.development == 'online') {
+        var js_conf = static_conf["js"];
+        for (var key in js_conf) {
+            var conf = js_conf[key];
 
             var temp = [];
             for (var c = 0; c < conf.length; c++) {
@@ -159,43 +147,35 @@ module.exports = function (grunt) {
                 temp = temp.concat(combine(temp, searcher.result));
                 temp.push(conf[c]);
             }
-            ued_conf[key] = temp;
+
+            static_conf[key] = temp;
         }
     }
 
     /**
      * 将依赖文件列表写入文件
      */
-    var ued_concat = {};
+    var static_concat = {};
 
-    var ASource = [];
-
-    for (var j in ued_conf) {
-        ASource = ued_conf[j];
-
-        if (j.indexOf(".js") > -1) {
-            for (var n = 0; n < ASource.length; n++) {
-                ASource[n] = ASource[n];
-            }
+    for (var j in static_conf) {
+        for (var m in static_conf[j]) {
+            static_concat["../dist/" + static_config.publish + "/" + m] = ['<banner:meta.banner>', static_conf[j][m]];
         }
-
-        ued_conf[j] = ASource;
-        ued_concat["../dist/" + ued_config.publish + "/" + j] = ['<banner:meta.banner>', ued_conf[j]];
     }
 
-    grunt.file.write("Concat.js", "var ued_concat = " + JSON.stringify(ued_conf) + "; /*try{panda.use(\"base.global\");}catch(e){}*/");
+    grunt.file.write("Concat.js", "var static_concat = " + JSON.stringify(static_conf) + ";");
 
     /**
      *  压缩文件的映射关系
      */
-    var ued_min = {};
-    var ued_mincss = {};
+    var static_minjs = {};
+    var static_mincss = {};
 
-    for (var i in ued_concat) {
+    for (var i in static_concat) {
         if (i.indexOf(".js") > -1) {
-            ued_min[i.replace(".js", "-min.js")] = [i];
+            static_minjs[i.replace(".js", "-min.js")] = [i];
         } else if (i.indexOf(".css") > -1) {
-            ued_mincss[i.replace(".css", "-min.css")] = [i];
+            static_mincss[i.replace(".css", "-min.css")] = [i];
         }
     }
     // Project configuration.
@@ -203,39 +183,45 @@ module.exports = function (grunt) {
         pkg: '<json:dapeigou.jquery.json>',
         meta: {
             banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-                '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-                '<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
-                '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-                ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
+            '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
+            '<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
+            '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
+            ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
         },
-        concat: ued_concat,
-        min: ued_min,
-        qunit: {
-            files: ['test/**/*.html']
-        },
-        lint: {
-            files: ['grunt.js', 'src/**/*.js']
-        },
-        watch: {
-            files: '<config:lint.files>',
-            tasks: 'lint qunit'
-        },
+        concat: static_concat,
+        min: static_minjs,
+        //qunit: {
+        //    files: ['test/**/*.html']
+        //},
+        //lint: {
+        //    files: ['grunt.js', 'script/*.js']
+        //},
+        //watch: {
+        //    files: '<config:lint.files>',
+        //    tasks: 'lint qunit'
+        //},
         jshint: {
             options: {
+                //大括号包裹
                 curly: true,
+                //对于简单类型，使用===和!==，而不是==和!=
                 eqeqeq: true,
-                immed: true,
-                latedef: true,
+                //对于首字母大写的函数（声明的类），强制使用new
                 newcap: true,
+                //禁用arguments.caller和arguments.callee
                 noarg: true,
+                //对于属性使用aaa.bbb而不是aaa['bbb']
                 sub: true,
+                //查找所有未定义变量
                 undef: true,
+                //查找类似与if(a = 0)这样的代码
                 boss: true,
-                eqnull: true,
-                browser: true
+                //指定运行环境为node.js
+                node: true
             },
-            globals: {
-                jQuery: true
+            //具体任务配置
+            files: {
+                src: ["../script/*.js"]
             }
         },
         uglify: {
@@ -243,12 +229,12 @@ module.exports = function (grunt) {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
             },
             my_target: {
-                files: ued_min
+                files: static_minjs
             }
         },
         cssmin: {
             compress: {
-                files: ued_mincss
+                files: static_mincss
             }
         },
         yuidoc: {
@@ -266,14 +252,14 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    //grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     //grunt.loadNpmTasks('grunt-contrib-yuidoc');
     grunt.loadNpmTasks('grunt-cmd-transport');
 
     grunt.registerTask('cssimg', 'add a version number to css-img-url', function (arg1, arg2) {
-        var icons = grunt.file.expand("../dist/" + ued_config.publish + "/*.css");
+        var icons = grunt.file.expand("../dist/" + static_config.publish + "/*.css");
 
         for (var i = 0; i < icons.length; i++) {
             var fileContent = grunt.file.read(icons[i]);
@@ -284,7 +270,7 @@ module.exports = function (grunt) {
                     if (target.indexOf('?') > -1) {
                         target = target.substring(0, target.indexOf('?'));
                     }
-                    return 'url(' + target + '?' + ued_config.publish + ')';
+                    return 'url(' + target + '?' + static_config.publish + ')';
                 } else {
                     return 'url(' + target + ')';
                 }
@@ -292,18 +278,32 @@ module.exports = function (grunt) {
             grunt.file.write(icons[i], fileContent);
         }
         ;
-        console.log('add version by ' + ued_config.version);
+
+        console.log('add version by ' + static_config.version);
     });
 
-    grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'cssimg']);
+    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin', 'cssimg']);
 
-    grunt.file.delete("../dist/" + ued_config.publish + "/i");
-    var icons = grunt.file.expand("../skin/" + ued_config.version + "/i/*");
+    grunt.file.delete("../dist/" + static_config.publish + "/i");
+    // var icons = grunt.file.expand("../skin/" + static_config.version + "/i/*");
+    var icons = grunt.file.expand("../skin/**/i/*");
     for (var i = 0; i < icons.length; i++) {
         var names = icons[i].split('/');
         if (names[names.length - 1].indexOf(".psd") > -1) {
         } else {
-            grunt.file.copy(icons[i], "../dist/" + ued_config.publish + "/i/" + names[names.length - 1]);
+            grunt.file.copy(icons[i], "../dist/" + static_config.publish + "/i/" + names[names.length - 1]);
         }
     }
+    /**
+     * 文件拷贝
+     */
+    grunt.file.recurse("../img/", function (abspath, rootdir, subdir, filename) {
+        grunt.file.copy(abspath, "../dist/" + static_config.publish + "/img/" + subdir + "/" + filename);
+    });
+    ///**
+    // * 文件拷贝
+    // */
+    //grunt.file.recurse("../skin/", function(abspath, rootdir, subdir, filename){
+    //	grunt.file.copy(abspath,"../dist/" + static_config.publish +"/i/" + subdir + "/" + filename);
+    //});
 };
