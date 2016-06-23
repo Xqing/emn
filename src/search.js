@@ -41,18 +41,9 @@
         _ajaxBind: function () {
           $('.j-search-btn').on('click',function(){
               var userJson = {};
-              userJson['searchVal'] = $(this).siblings('.search-val').val();
+              searchVal = $(this).siblings('.search-val').val();
 
-              $.ajax({
-                  url:'/index.htm',
-                  data: userJson,
-                  type: "get",
-                  success: function (data) {
-                      if(data.result){
-
-                      }
-                  }
-              });
+              window.location.href='/index/search?meetname='+searchVal;
 
           });
         },
