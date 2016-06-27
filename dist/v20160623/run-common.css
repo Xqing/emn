@@ -256,6 +256,10 @@ body {
   background-color: rgba(255, 255, 255, 0.8);
   color: #00c3b9;
 }
+.emn-china-meeting .header .header-content .menu-main ul li a.tag {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #00c3b9;
+}
 .emn-china-meeting .header .header-content .header-search {
   float: right;
   transition: all .5s;
@@ -377,6 +381,9 @@ body {
   -o-transition: all .5s;
 }
 .emn-china-meeting .main .nav ul li a:hover {
+  color: #00c3b9;
+}
+.emn-china-meeting .main .nav ul li a.tags {
   color: #00c3b9;
 }
 .emn-china-meeting .main .nav ul li a:before {
@@ -589,7 +596,7 @@ body {
   border-bottom: 1px solid #00c3b9;
   box-shadow: none;
   color: #212020;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   height: auto;
   padding: 11px 20px 11px 25px;
@@ -598,12 +605,13 @@ body {
 .emn-china-meeting .content .columns .content-text table tr td {
   border-bottom: 1px solid #00c3b9;
   color: #212020;
-  font-size: 12px;
+  font-size: 14px;
   height: auto;
   padding: 11px 20px 11px 25px;
 }
 .emn-china-meeting .content .columns .content-text table tr td a {
   color: #212020;
+  font-size: 14px;
 }
 .emn-china-meeting .content .columns .content-text .pagination {
   width: 100%;

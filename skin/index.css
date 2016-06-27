@@ -51,6 +51,10 @@
   background-color: rgba(255, 255, 255, 0.8);
   color: #00c3b9;
 }
+.emn-china-meeting .header .header-content .menu-main ul li a.tag {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #00c3b9;
+}
 .emn-china-meeting .header .header-content .header-search {
   float: right;
   transition: all .5s;
@@ -172,6 +176,9 @@
   -o-transition: all .5s;
 }
 .emn-china-meeting .main .nav ul li a:hover {
+  color: #00c3b9;
+}
+.emn-china-meeting .main .nav ul li a.tags {
   color: #00c3b9;
 }
 .emn-china-meeting .main .nav ul li a:before {
