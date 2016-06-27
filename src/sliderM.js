@@ -11,7 +11,7 @@
             auto: false,
             node: "ul",
             rank: 1,
-            point: false,
+            point: true,
             loop: false,
             width: null
         };
@@ -158,8 +158,8 @@
         points.eq(index).addClass("active");
 
         points.parent().css({
-            "width": this.total + 'rem',
-            "margin-left": -this.total / 2 + 'rem'
+            "width": this.total *28 + 'px',
+            "margin-left": -this.total*28 / 2 + 'px'
         });
     };
     Slider.prototype.autoMatic = function () {
@@ -236,6 +236,11 @@
         this.sliderWrap.bind(this.EVENTS.MOUSE_END, function (evt) {
             self.endHandler(evt);
             self.restart();
+        });
+
+        this.sliderWrap.delegate('span', 'click', function(event) {
+            var index = $(this).index();
+            self.move(index);
         });
 
         this.$win.bind("scroll", function () {

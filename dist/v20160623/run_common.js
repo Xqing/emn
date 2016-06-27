@@ -36,7 +36,7 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
         _layoutInit: function () {
 			var self = this;
 			var wrapWidth = parseInt($(this.opts.node).css('width'));
-			var wrapHeight = wrapWidth / 2.25;
+			var wrapHeight = wrapWidth / 2.25 + 35;
 			$(self.opts.node).css('height', wrapHeight);
 			self.sliderWrapUl.css('width', self.sliderWrapUl.find('li').length * wrapWidth);
 			self.sliderWrapUl.find('li').css('width', wrapWidth);
@@ -186,7 +186,7 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
             auto: false,
             node: "ul",
             rank: 1,
-            point: false,
+            point: true,
             loop: false,
             width: null
         };
@@ -333,8 +333,8 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
         points.eq(index).addClass("active");
 
         points.parent().css({
-            "width": this.total + 'rem',
-            "margin-left": -this.total / 2 + 'rem'
+            "width": this.total *28 + 'px',
+            "margin-left": -this.total*28 / 2 + 'px'
         });
     };
     Slider.prototype.autoMatic = function () {
@@ -411,6 +411,11 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
         this.sliderWrap.bind(this.EVENTS.MOUSE_END, function (evt) {
             self.endHandler(evt);
             self.restart();
+        });
+
+        this.sliderWrap.delegate('span', 'click', function(event) {
+            var index = $(this).index();
+            self.move(index);
         });
 
         this.$win.bind("scroll", function () {

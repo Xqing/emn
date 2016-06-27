@@ -31,7 +31,7 @@
         _layoutInit: function () {
 			var self = this;
 			var wrapWidth = parseInt($(this.opts.node).css('width'));
-			var wrapHeight = wrapWidth / 2.25;
+			var wrapHeight = wrapWidth / 2.25 + 35;
 			$(self.opts.node).css('height', wrapHeight);
 			self.sliderWrapUl.css('width', self.sliderWrapUl.find('li').length * wrapWidth);
 			self.sliderWrapUl.find('li').css('width', wrapWidth);
