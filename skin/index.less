@@ -1,6 +1,7 @@
 .emn-china-meeting{
   min-height: 100%;
   position: relative;
+  overflow: auto;
   .header{
     background: #00c2b9;
     line-height: 45px;
@@ -50,6 +51,11 @@
                 background-color: rgba(256,256,256,0.8);
                 color: #00c3b9;
               }
+              &.tag{
+                background-color: rgba(256,256,256,0.8);
+                color: #00c3b9;
+              }
+
             }
           }
         }
@@ -184,6 +190,9 @@
             -webkit-transition: all .5s;
             -o-transition: all .5s;
             &:hover{
+              color: #00c3b9;
+            }
+            &.tags{
               color: #00c3b9;
             }
             &:before{

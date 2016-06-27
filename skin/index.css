@@ -1,6 +1,7 @@
 .emn-china-meeting {
   min-height: 100%;
   position: relative;
+  overflow: auto;
 }
 .emn-china-meeting .header {
   background: #00c2b9;
