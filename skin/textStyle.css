@@ -11,6 +11,10 @@
   color: #222222;
   text-decoration: underline;
 }
+.emn-china-meeting .content .columns .subtitle {
+  display: block;
+  margin-bottom: 24px;
+}
 .emn-china-meeting .content .columns .content-text {
   line-height: 1.5;
   margin-top: 20px;
@@ -84,6 +88,13 @@
 }
 .emn-china-meeting .content .columns .content-text .pagination ul li.active a {
   color: #ffffff;
+}
+.emn-china-meeting .content .columns .content-textShow ul li {
+  margin-bottom: 24px;
+}
+.emn-china-meeting .content .columns .content-textShow ul li .references {
+  font-size: 16px;
+  color: #1e73be;
 }
 .emn-china-meeting .content p.abstract {
   font-size: 12px;
